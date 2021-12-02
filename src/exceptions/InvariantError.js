@@ -1,5 +1,5 @@
-const ClientError = require('./ClientError');
- 
+const ClientError = require('./BadRequestError');
+
 class InvariantError extends ClientError {
   constructor(message) {
     super(message);
