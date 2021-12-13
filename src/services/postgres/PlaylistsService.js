@@ -32,6 +32,7 @@ class PlaylistsService {
   async getPlaylists(owner) {
     try {
       const playlists = await this._cacheService.get(`playlists:${owner}`);
+      console.log("getting from cache");
       return JSON.parse(result);
     } catch (error) {
       const query = {
@@ -46,12 +47,12 @@ class PlaylistsService {
           playlists: playlists.rows,
         },
       };
-      await this._cacheService.set(`playlits:${owner}`, JSON.stringify(result));
+      await this._cacheService.set(`playlists:${owner}`, JSON.stringify(result));
       return result;
     }
   }
 
-  async deletePlaylistById(id) {
+  async deletePlaylistById(id, owner) {
     const query = {
       text: 'DELETE FROM playlists WHERE id=$1 RETURNING id',
       values: [id],
@@ -62,6 +63,8 @@ class PlaylistsService {
     if (!result.rows.length) {
       throw new NotFoundError('Playlist gagal dihapus. Id tidak ditemukan');
     }
+
+    await this._cacheService.set(`playlists:${owner}`, JSON.stringify(result));
   }
 
   async addSongToPlaylist(playlistId, songId) {
