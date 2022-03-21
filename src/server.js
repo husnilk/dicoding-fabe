@@ -92,6 +92,8 @@ const init = async () => {
   await server.start();
   
   console.log(`Server jalan di port :::: ${server.info.uri}`);
+  console.log(`Server aktif di port ${server.info.uri}`);
+
 };
 
 init();
